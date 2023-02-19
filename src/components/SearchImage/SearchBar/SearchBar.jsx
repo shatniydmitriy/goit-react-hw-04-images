@@ -1,43 +1,23 @@
-import { Component } from "react";
 import PropTypes from "prop-types"
 import { BsSearch } from 'react-icons/bs';
 
+import initialState from "./initialSttate";
+import useForm from "shered/hooks/useForm";
+
 import styles from "./searchBar.module.css";
 
-class SearchBar extends Component {
-
-    state = {
-        search: "",
-    }
-            
-    handleChange = ({ target }) => {
-        const { name, value } = target;
-        this.setState({ [name]: value });
-    }
-            
-    handelSubmit = e => {
-        e.preventDefault();
-        const { onSubmit } = this.props;
-        onSubmit({ ...this.state });
-        this.reset();
-
-    }
+const SearchBar = ({ onSubmit }) => {
+      const { state, handleChange, handleSubmit } = useForm({
+       initialState,
+       onSubmit,
+  });
+    const { search } = state;
     
-    reset() {
-        this.setState({
-            search: "",
-        })
-    }
 
-
-
-    render() {
-        const { search } = this.state;
-        const { handleChange, handelSubmit } = this;
 
         return (
             <header className={styles.searchbar}>
-                <form className={styles.searchForm} onSubmit={handelSubmit}>
+                <form className={styles.searchForm} onSubmit={handleSubmit}>
                     <button type="submit" className={styles.searchFormButton}>
                     <BsSearch />
                     <span className={styles.searchFormButtonLabel}>Search</span>
@@ -57,7 +37,6 @@ class SearchBar extends Component {
                 </form>
                 </header>
         )
-    }
 }
 
 export default SearchBar;
